@@ -1,15 +1,19 @@
+
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Exo } from "next/font/google";
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 import "./globals.css";
+import Navbar from "@/components/layout/navbar/navbar";
+import Footer from "@/components/layout/footer/footer";
+import { Toaster } from "sonner";
+import { SessionProvider } from "next-auth/react";
+import Providers from "@/ServicesUi/Providers";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const exo = Exo({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["400", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -25,9 +29,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${exo.className} antialiased`}
       >
+        <Providers>
+          <Navbar/>
+        <Toaster position="top-right" />
         {children}
+        <Footer/>
+        </Providers>
       </body>
     </html>
   );
