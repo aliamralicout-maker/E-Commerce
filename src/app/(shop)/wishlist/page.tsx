@@ -4,7 +4,7 @@ import Link from "next/link";
 import { getAllWishlist } from "@/actions/wishlist.action";
 import WishListUi from "./wishListUi/wishListUi";
 
-
+export const dynamic = "force-dynamic";
 
 export default async function WishlistTable() {
 

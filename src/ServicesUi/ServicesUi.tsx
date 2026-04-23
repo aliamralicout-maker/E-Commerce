@@ -7,7 +7,7 @@ import React from 'react'
 import { FaLayerGroup, FaTruck, FaUndo, FaShieldAlt, FaHeadset } from "react-icons/fa";
 
 interface props {
-    data: Data,
+    data?: Data,
 }
 
 
