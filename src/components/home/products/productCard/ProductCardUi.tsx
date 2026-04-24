@@ -55,7 +55,7 @@ export default function ProductCardUi({ data }: Props) {
 
                                 <Link
                                     href="/products/6428eb43dc1175abc65ca0b3"
-                                    className="bg-white h-8 w-8 rounded-full flex items-center justify-center text-gray-600 hover:text-green-600 shadow-sm"
+                                    className="bg-white h-8 w-8 rounded-full flex items-center justify-center text-gray-600 hover:text-green-600 shadow-sm "
                                 >
                                     <FaEye />
 
@@ -67,7 +67,7 @@ export default function ProductCardUi({ data }: Props) {
 
                         <div className="p-4">
                             <div className="text-xs text-gray-500 mb-1">{item.category.name}</div>
-                            <h3 className="font-medium mb-1 cursor-pointer" title={item.slug}>
+                            <h3 className="font-medium mb-1 cursor-pointer hover:text-green-600" title={item.slug}>
                                 <Link className="line-clamp-1" href={`/products/${item._id}`}>
                                     {item.slug}
                                 </Link>

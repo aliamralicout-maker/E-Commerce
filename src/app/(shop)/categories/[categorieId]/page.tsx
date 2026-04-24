@@ -1,6 +1,6 @@
 import { getProductsByCategory, getSpecificCategory } from '@/services/categories.services';
 import { Gradient } from '@/ServicesUi/ServicesUi';
-import { FaArrowLeft, FaBoxOpen, FaFilter, FaFolderOpen, FaLayerGroup } from 'react-icons/fa';
+import { FaArrowLeft, FaFolderOpen } from 'react-icons/fa';
 import { IoClose } from "react-icons/io5";
 import ProductIdUi from '../../products/ProductIdUi/ProductIdUi';
 import ProductCardUi from '@/components/home/products/productCard/ProductCardUi';
@@ -14,10 +14,10 @@ export default async function categorieId({ params }: any) {
 
   const singleCategorie = await getSpecificCategory(categorieId);
 
-  // const allProductInCategory = await getProductsByCategory(categorieId);
+  const allProductInCategory = await getProductsByCategory(categorieId);
 
 
-  // console.log('allProductInCategory = ', allProductInCategory);
+  console.log('allProductInCategory = ', allProductInCategory);
 
 
 
@@ -63,7 +63,7 @@ export default async function categorieId({ params }: any) {
       </div>
 
 
-    <ProductsByCategory id={categorieId} />
+    {/* <ProductsByCategory id={categorieId} /> */}
 
 
     </div >

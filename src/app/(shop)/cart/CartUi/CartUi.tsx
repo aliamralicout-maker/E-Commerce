@@ -2,13 +2,15 @@
 
 import { useState } from 'react';
 
-import { FaPlus, FaMinus, FaTrash, FaUser, FaBoxOpen, FaArrowRight, FaShoppingCart } from "react-icons/fa";
+import { FaPlus, FaMinus, FaTrash, FaTruck, FaBoxOpen, FaArrowRight, FaShoppingCart, FaShieldAlt } from "react-icons/fa";
+import { RiLock2Fill } from "react-icons/ri";
 import Link from 'next/link';
 import { FeaturesSection } from '@/ServicesUi/ServicesUi';
 import { CartResponse } from '@/interfaces/cart.interface';
 import { clearAllCart, deleteCart } from '@/actions/cart.action';
 import { useCart } from '@/context/CartContext';
 import Swal from "sweetalert2";
+import { FaArrowLeftLong, FaBagShopping } from 'react-icons/fa6';
 
 type Props = {
     data: CartResponse;
@@ -169,7 +171,7 @@ export default function CartUi({ data }: Props) {
             <div className="container m-auto">
                 {/* nav */}
                 <nav className="flex items-center gap-2 text-sm text-gray-500 py-4">
-                    <Link href={'/'} className="hover:text-primary-600 transition">
+                    <Link href={'/'} className="hover:text-green-600 transition">
                         Home
                     </Link>
 
@@ -223,20 +225,20 @@ export default function CartUi({ data }: Props) {
                                                 <div className="flex-1 min-w-0 flex flex-col">
                                                     <div className="mb-3">
                                                         <Link href="/products/1" className="group/title">
-                                                            <h3 className="font-semibold text-gray-900 group-hover/title:text-primary-600 transition-colors leading-relaxed text-base sm:text-lg">
+                                                            <h3 className="font-semibold text-gray-900 group-hover/title:text-green-600 transition-colors leading-relaxed text-base sm:text-lg">
                                                                 {item.product?.title}
                                                             </h3>
                                                         </Link>
 
                                                         <div className="flex items-center gap-2 mt-2">
-                                                            <span className="inline-block px-2.5 py-1 bg-primary-50 text-primary-700 text-xs font-medium rounded-full">
+                                                            <span className="inline-block px-2.5 py-1 bg-green-50 text-green-700 text-xs font-medium rounded-full">
                                                                 {item.product?.slug}
                                                             </span>
                                                         </div>
                                                     </div>
 
                                                     <div className="mb-4">
-                                                        <span className="text-primary-600 font-bold text-lg">
+                                                        <span className="text-green-600 font-bold text-lg">
                                                             {item?.price} EGP
                                                         </span>
                                                     </div>
@@ -304,7 +306,7 @@ export default function CartUi({ data }: Props) {
                                 </div>
                             ))}
                             <div className="mt-6 pt-6 px-2 border-t border-gray-200 flex items-center justify-between">
-                                <Link href="/" className="text-primary-600 font-medium text-sm flex items-center gap-2">
+                                <Link href="/" className="text-green-600 font-medium text-sm flex items-center gap-2">
                                     <span>←</span> Continue Shopping
                                 </Link>
 
@@ -316,51 +318,100 @@ export default function CartUi({ data }: Props) {
                         </div>
 
                         {/* RIGHT SIDE */}
-                        {cartItems.length > 0 && <div className="lg:col-span-1">
-                            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden sticky top-4">
-                                <div className="bg-gray-900 p-5">
-                                    <h2 className="text-white font-bold text-lg">Order Summary</h2>
-                                </div>
+                        {cartItems.length > 0 && (
+                            <div className="lg:col-span-1">
+                                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden sticky top-4">
 
-                                <div className="p-5 space-y-4">
-                                    <div className="flex justify-between text-gray-600">
-                                        <span>Subtotal ({Subtotal} items)</span>
-                                        <span className="font-semibold">{Subtotal} EGP</span>
+                                    {/* Header */}
+                                    <div className="bg-linear-to-r from-green-600 to-green-700 p-5">
+                                        <h2 className="text-white font-bold text-lg flex items-center gap-2">
+                                            <FaBagShopping />
+                                            Order Summary
+                                        </h2>
+                                        <p className='text-white text-sm'>{numOfCartItem} items in your cart</p>
                                     </div>
 
-                                    <div className="flex justify-between text-gray-600">
-                                        <span>Shipping</span>
-                                        <span className="text-green-600 font-medium">Calculated at checkout</span>
+                                    <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4 flex items-center gap-3">
+
+                                        {/* Icon */}
+                                        <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                                            <FaTruck className="text-green-600" />
+                                        </div>
+
+                                        {/* Text */}
+                                        <div>
+                                            <p className="font-semibold text-green-700">Free Shipping!</p>
+                                            <p className="text-sm text-green-600">You qualify for free delivery</p>
+                                        </div>
+
                                     </div>
 
-                                    <hr className="border-gray-200" />
+                                    <div className="p-5 space-y-4">
 
-                                    <div className="flex justify-between text-lg font-bold">
-                                        <span>Estimated Total</span>
-                                        <span className="text-primary-600">{Subtotal} EGP</span>
-                                    </div>
+                                        {/* Subtotal */}
+                                        <div className="flex justify-between text-gray-600">
+                                            <span>Subtotal</span>
+                                            <span className="font-semibold">{Subtotal} EGP</span>
+                                        </div>
 
-                                    <div className="pt-4 space-y-3">
+                                        {/* Shipping */}
+                                        <div className="flex justify-between text-gray-600">
+                                            <span>Shipping</span>
+                                            <span className="text-green-600 font-medium flex items-center gap-1">
+                                                Free
+                                            </span>
+                                        </div>
+
+                                        <hr className="border-gray-200" />
+
+                                        {/* Total */}
+                                        <div className="flex justify-between">
+                                            <span className='text-lg font-bold text-gray-800'>Total</span>
+                                            <span className="text-green-600 text-2xl font-bold">{Subtotal} <span className='text-gray-600 text-sm'>EGP</span> </span>
+                                        </div>
+
+                                        {/* Login button */}
+                                        <div className="pt-4 space-y-3">
+                                            <Link
+                                                href="/checkout"
+                                                className="w-full flex items-center justify-center gap-2 bg-green-600 text-white py-3.5 rounded-xl font-semibold hover:bg-green-700 transition"
+                                            >
+                                                <RiLock2Fill />
+                                                Secure Checkout
+                                            </Link>
+
+                                            <div className="flex items-center justify-center gap-4 py-2">
+
+                                                {/* Secure Payment */}
+                                                <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                                                    <FaShieldAlt className="text-green-500" />
+                                                    <span>Secure Payment</span>
+                                                </div>
+
+                                                {/* Divider */}
+                                                <div className="w-px h-4 bg-gray-200"></div>
+
+                                                {/* Fast Delivery */}
+                                                <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                                                    <FaTruck className="text-blue-500" />
+                                                    <span>Fast Delivery</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
                                         <Link
-                                            href="/login?redirect=/cart"
-                                            className="w-full flex items-center justify-center gap-2 bg-primary-600 text-white py-3.5 rounded-xl font-semibold hover:bg-primary-700"
+                                            href="/"
+                                            className=" text-center text-green-600 hover:text-green-700 text-sm font-medium py-2 flex items-center justify-center gap-1"
                                         >
-                                            <FaUser /> Login to Checkout
+                                            <FaArrowLeftLong className='me-3' />
+                                            Continue Shopping
                                         </Link>
 
-                                        <p className="text-xs text-gray-400 text-center">
-                                            Don't have an account? <Link href="/signup" className="text-primary-600 hover:underline">Sign up</Link>
-                                        </p>
-                                    </div>
-
-                                    <div className="pt-4 border-t border-gray-100 space-y-2">
-                                        <p className="text-xs text-gray-500">✓ Your cart items will be saved</p>
-                                        <p className="text-xs text-gray-500">✓ Track your orders easily</p>
-                                        <p className="text-xs text-gray-500">✓ Access exclusive member deals</p>
                                     </div>
                                 </div>
                             </div>
-                        </div>}
+                        )}
                     </div>
                     :
                     <div className="min-h-[60vh] flex items-center justify-center px-4">
@@ -406,6 +457,7 @@ export default function CartUi({ data }: Props) {
         </>
     )
 };
+
 
 
 

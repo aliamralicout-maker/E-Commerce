@@ -48,8 +48,12 @@ export default function Navbar() {
 
   useEffect(() => {
     GetCart().then((res) => { upDateNumOfCartItems(res.numOfCartItems) })
-    getAllWishlist().then((res) => { updateNumOfWishlistItems(res.numOfWishlistItems) })
+    getAllWishlist().then((res) => {
+      updateNumOfWishlistItems(res.data.length)
+    })
   }, [])
+
+
 
 
   return (
@@ -217,7 +221,7 @@ export default function Navbar() {
                   <div className="hidden lg:block relative">
 
                     {/* Button */}
-                    <button onClick={() => setDropDown(!dropDown)} className="relative p-2.5 rounded-full hover:bg-gray-100 transition-colors group">
+                    <button onClick={() => setDropDown(!dropDown)} className=" cursor-pointer relative p-2.5 rounded-full hover:bg-gray-100 transition-colors group">
                       <FaRegCircleUser className="text-xl text-gray-500 group-hover:text-primary-600 transition-colors" />
                     </button>
 
@@ -248,27 +252,27 @@ export default function Navbar() {
                       {/* Links */}
                       <div className="py-2">
 
-                        <Link className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary-600 hover:bg-gray-300 transition-colors" href="/profile">
+                        <Link onClick={()=>setDropDown(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary-600 hover:bg-gray-300 transition-colors" href="/profile">
                           <FaUser className="w-4 text-gray-400" />
                           My Profile
                         </Link>
 
-                        <Link className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary-600 hover:bg-gray-300 transition-colors" href="/orders">
+                        <Link onClick={()=>setDropDown(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary-600 hover:bg-gray-300 transition-colors" href="/orders">
                           <FaBoxOpen className="w-4 text-gray-400" />
                           My Orders
                         </Link>
 
-                        <Link className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary-600 hover:bg-gray-300 transition-colors" href="/wishlist">
+                        <Link onClick={()=>setDropDown(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary-600 hover:bg-gray-300 transition-colors" href="/wishlist">
                           <FaHeart className="w-4 text-gray-400" />
                           My Wishlist
                         </Link>
 
-                        <Link className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary-600 hover:bg-gray-300 transition-colors" href="/profile">
+                        <Link onClick={()=>setDropDown(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary-600 hover:bg-gray-300 transition-colors" href="/profile">
                           <FaAddressBook className="w-4 text-gray-400" />
                           Addresses
                         </Link>
 
-                        <Link className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary-600 hover:bg-gray-300 transition-colors" href="/profile">
+                        <Link onClick={()=>setDropDown(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary-600 hover:bg-gray-300 transition-colors" href="/profile">
                           <FaCog className="w-4 text-gray-400" />
                           Settings
                         </Link>
@@ -389,7 +393,7 @@ export default function Navbar() {
 
                   {/* Auth */}
                   { !session.data ? 
-                  <div className="p-4 grid grid-cols-2 gap-3">
+                  <div className="mt-5 p-4 grid grid-cols-2 gap-3">
                     <Link
                       href="/login"
                       className="bg-green-600 hover:bg-green-700 transition text-white text-center py-3 rounded-xl"
@@ -405,7 +409,7 @@ export default function Navbar() {
                     </Link>
                   </div>:
                   <div onClick={()=>logOutHandlar()} className="px-4">
-                    <button className="w-full border border-red-600 text-red-600 hover:bg-red-100 transition text-center py-3 rounded-xl">signOut</button>
+                    <button className="mt-5 w-full border border-red-600 text-red-600 hover:bg-red-100 transition text-center py-3 rounded-xl">sign Out</button>
                   </div>
                   }
 

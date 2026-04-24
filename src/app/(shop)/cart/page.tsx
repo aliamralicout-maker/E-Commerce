@@ -3,7 +3,7 @@ import { Cart } from '@/interfaces/cart.interface';
 import { deleteCart, GetCart } from '../../../actions/cart.action'
 import CartUi from './CartUi/CartUi'
 
-
+export const dynamic = "force-dynamic";
 export default async function page() {
 
 

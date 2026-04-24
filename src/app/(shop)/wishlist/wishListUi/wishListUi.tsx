@@ -11,40 +11,32 @@ interface Params {
     data: wishList;
 }
 
-type Product = {
-    id: string;
-    _id: string;
-};
-
 export default function WishListUi({ data }: Params) {
 
-    const { updateNumOfWishlistItems } = useWishlist();
-    
+    const { updateNumOfWishlistItems, numOfWishlistItems } = useWishlist();
+
     const [loadingId, setLoadingId] = useState<string | null>(null);
-    const [wishlist, setWishlist] = useState<Product[]>([]);
-
-    const items = data?.data || [];
-
-    console.log("items: ", items);
+    const [wishlist, setWishlist] = useState(data.data || []);
 
     const delItem = async (id: string) => {
         setLoadingId(id);
-        try {
-            
-            const res = await removeItemToWishlist(id);
-            setWishlist((prev) => prev.filter((item) => item._id !== id));
+
+        const res = await removeItemToWishlist(id);
+
+        if (res.status) {
+            setWishlist((prev) => {
+                const updated = prev.filter((item) => item._id !== id);
+                updateNumOfWishlistItems(updated.length);
+                return updated;
+            });
         }
-        
-        finally {
-            setLoadingId(null);
-        }
+
+        setLoadingId(null);
     };
 
-useEffect(() => {
-    if (data?.count !== undefined) {
-        updateNumOfWishlistItems(data.count);
-    }
-}, [data?.count]);
+
+
+
 
 
     return (
@@ -61,7 +53,7 @@ useEffect(() => {
                         <div>
                             <h1 className="text-2xl font-bold">My Wishlist</h1>
                             <p className="text-gray-500 text-sm">
-                                {items.length} items saved
+                                {numOfWishlistItems} items saved
                             </p>
                         </div>
                     </div>
@@ -84,7 +76,7 @@ useEffect(() => {
                     {/* Rows */}
                     <div className="divide-y">
 
-                        {items.map((item) => (
+                        {wishlist.map((item) => (
                             <div
                                 key={item.id}
                                 className="flex items-center px-6 py-5 hover:bg-gray-50/50"
@@ -157,6 +149,7 @@ useEffect(() => {
                 </div>
 
             </div>
+
         </div>
     );
 }

@@ -38,10 +38,12 @@ export const registerSchema = z.object({
             "* Password must be at least 8 characters and include an uppercase letter, a lowercase letter, a number, and a special character."
         ),
 
-    Phone: z.string().nonempty({message:'*Required phone'}).regex(
-        /^(002|\+?20)?1[0125][0-9]{8}$/,
-        { message: '*Invalid phone number' }
-    ),
+    Phone: z.string()
+        .nonempty({ message: '*Required phone' })
+        .regex(
+            /^01[0125][0-9]{8}$/,
+            { message: '*Invalid phone number' }
+        ),
 }).refine((data) => {
     if (data.password === data.rePassword) {
         return true;
