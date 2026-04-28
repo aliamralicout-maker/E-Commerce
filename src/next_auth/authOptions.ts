@@ -33,14 +33,8 @@ export const authOpthions: NextAuthOptions = {
                         throw new Error(data.message || 'invalid data');
                     }
 
-                    // // cookies
-                    // const cookie = await cookies();
-                    // cookie.set('user-token',data.token);
-                    console.log('credantials', data);
-
                     // const decoded = JSON.parse(atob(data.token).split('.')[1]);  مش اسلم حل عشان بيبقي في كاركتر ممكن تضرب بسببها 
                     const decoded: Decoded = jwtDecode(data.token);
-
 
                     return {
                         id: decoded.id,
@@ -68,7 +62,6 @@ export const authOpthions: NextAuthOptions = {
         jwt({ token, user }) {
 
             console.log('jwt', { token, user })
-
             if (user) {
                 token.accessToken = user.accessToken;
                 token.user = {
@@ -77,20 +70,16 @@ export const authOpthions: NextAuthOptions = {
                     name: user.name
                 }
             }
-
             return token;
         },
 
-        session({token,session}){
-            console.log("tset session",{session,token});
-
+        session({ token, session }) {
+            console.log("tset session", { session, token });
             session.user = token.user;
-
-
             return session;
         }
 
-        
+
         // بتشتغل ف تلت حلات 
         // 1. userSession       2. getServerSession     3. rout Handelar 
     }

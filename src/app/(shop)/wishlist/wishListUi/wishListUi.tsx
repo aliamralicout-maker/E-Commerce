@@ -1,22 +1,27 @@
 'use client';
 
+import { AddToCart } from '@/actions/cart.action';
 import { removeItemToWishlist } from '@/actions/wishlist.action';
+import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { wishList } from '@/interfaces/wishList.interface';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import { FaHeart, FaShoppingCart, FaTrash } from "react-icons/fa";
+import { FaCheckCircle, FaHeart, FaShoppingCart, FaTimesCircle, FaTrash } from "react-icons/fa";
+import { ImSpinner2 } from 'react-icons/im';
+import { toast } from 'sonner';
 
 interface Params {
     data: wishList;
 }
 
 export default function WishListUi({ data }: Params) {
-
+    const { upDateNumOfCartItems } = useCart();
     const { updateNumOfWishlistItems, numOfWishlistItems } = useWishlist();
 
     const [loadingId, setLoadingId] = useState<string | null>(null);
     const [wishlist, setWishlist] = useState(data.data || []);
+    const [loadingWishlist, setLoadingWishlist] = useState<string | null>(null);
 
     const delItem = async (id: string) => {
         setLoadingId(id);
@@ -26,7 +31,7 @@ export default function WishListUi({ data }: Params) {
         if (res.status) {
             setWishlist((prev) => {
                 const updated = prev.filter((item) => item._id !== id);
-                updateNumOfWishlistItems(updated.length);
+                // updateNumOfWishlistItems(updated.length);
                 return updated;
             });
         }
@@ -34,8 +39,75 @@ export default function WishListUi({ data }: Params) {
         setLoadingId(null);
     };
 
+    async function addProductToCart(productId: string) {
+        setLoadingWishlist(productId);
+
+        try {
+            const res = await AddToCart(productId);
+
+            if (res.status) {
+
+                toast(
+                    <div className="flex items-center gap-3">
+                        <FaCheckCircle className="text-green-500 text-xl" />
+                        <span className="text-sm font-medium">
+                            Product added to cart successfully
+                        </span>
+                    </div>,
+                    {
+                        duration: 3000,
+                        icon: null,
+                        style: {
+                            background: '#ECFDF5',
+                            color: '#065F46',
+                            border: '1px solid #A7F3D0',
+                            borderRadius: '10px',
+                            padding: '12px 16px'
+                        }
+                    }
+                );
+
+                upDateNumOfCartItems(res.numOfCartItems);
+            } else {
+                toast.error(
+                    <div className="flex items-center gap-3">
+                        <FaTimesCircle className="text-red-500 text-xl" />
+                        <span className="text-sm font-medium">
+                            {res.error?.message || 'Something went wrong!'}
+                        </span>
+                    </div>,
+                    {
+                        icon: null,
+                        style: {
+                            background: '#FEF2F2',
+                            color: '#991B1B',
+                            border: '1px solid #FECACA',
+                            borderRadius: '10px',
+                            padding: '12px 16px'
+                        }
+                    }
+                );
+            }
+
+        } catch (error) {
+            toast.error(
+                <div className="flex items-center gap-3">
+                    <FaTimesCircle className="text-red-500 text-xl" />
+                    <span className="text-sm font-medium">
+                        Network error occurred
+                    </span>
+                </div>
+            );
+        } finally {
+            setLoadingWishlist(null);
+        }
+    }
 
 
+
+useEffect(() => {
+    updateNumOfWishlistItems(wishlist.length);
+}, [wishlist]);
 
 
 
@@ -66,7 +138,7 @@ export default function WishListUi({ data }: Params) {
                 <div className="bg-white rounded-2xl border overflow-hidden">
 
                     {/* Header */}
-                    <div className=' grid grid-cols-12 gap-4 px-6 py-4 bg-gray-50 border-b border-gray-100 text-sm font-medium text-gray-500'>
+                    <div className='hidden  md:grid grid-cols-12 gap-4 px-6 py-4 bg-gray-50 border-b border-gray-100 text-sm font-medium text-gray-500'>
                         <div className="col-span-6">Product</div>
                         <div className="col-span-2 text-center">Price</div>
                         <div className="col-span-2 text-center">Status</div>
@@ -79,11 +151,11 @@ export default function WishListUi({ data }: Params) {
                         {wishlist.map((item) => (
                             <div
                                 key={item.id}
-                                className="flex items-center px-6 py-5 hover:bg-gray-50/50"
+                                className="flex flex-col md:flex-row md:items-center px-6 py-5 hover:bg-gray-50/50"
                             >
 
                                 {/* Product */}
-                                <div className="w-[50%] flex items-center gap-4">
+                                <div className="md:w-[50%] flex items-center gap-4">
                                     <img
                                         src={item.imageCover}
                                         className="w-20 h-20 object-contain border rounded-xl p-2 bg-gray-50"
@@ -105,28 +177,54 @@ export default function WishListUi({ data }: Params) {
                                         <span>{item.price} EGP</span>
                                     </div>
                                 ) : (
-                                    <div className="w-[15%] text-center font-semibold flex flex-col items-center">
-                                        <span className="text-green-600">
-                                            {item.priceAfterDiscount} EGP
-                                        </span>
+                                    <div className="md:w-[15%] md:text-center font-semibold flex flex-col md:items-center">
 
-                                        <span className="line-through text-gray-400 text-xs">
-                                            {item.price} EGP
-                                        </span>
+                                        <div className='flex pt-4'>
+                                            <div className="md:hidden flex items-center text-gray-600  me-2">
+                                                <span>
+                                                    price:
+                                                </span>
+                                            </div>
+
+                                            <div className='flex flex-col'>
+                                                <span className="text-green-600">
+                                                    {item.priceAfterDiscount} EGP
+                                                </span>
+
+                                                <span className="line-through text-gray-400 text-xs">
+                                                    {item.price} EGP
+                                                </span>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 )}
                                 {/* Status */}
-                                <div className="w-[15%] flex justify-center">
+                                <div className="md:w-[15%] flex md:justify-center pt-4">
+                                    <span className='md:hidden text-gray-600 '>Status: </span>
                                     <span className="px-3 py-1 text-xs bg-green-50 text-green-700 rounded-full">
                                         In Stock
                                     </span>
                                 </div>
 
                                 {/* Actions */}
-                                <div className="w-[20%] flex justify-center gap-2">
+                                <div className="md:w-[20%] flex md:justify-center gap-2 mt-4">
 
-                                    <button className="flex items-center gap-1 px-3  bg-green-700 hover:bg-green-800 transition cursor-pointer text-white rounded-lg text-sm">
-                                        <FaShoppingCart />
+                                    <button
+                                        onClick={() => addProductToCart(item?._id)}
+                                        className="w-[90%] flex items-center justify-center gap-2 px-3 bg-green-700 hover:bg-green-800 transition cursor-pointer text-white rounded-lg text-sm"
+                                    >
+                                        {loadingWishlist === item?._id ? (
+                                            <>
+                                                <ImSpinner2 className="animate-spin" />
+                                                <span>Loading...</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <FaShoppingCart />
+                                                <span>Add To Cart</span>
+                                            </>
+                                        )}
                                     </button>
 
                                     <button

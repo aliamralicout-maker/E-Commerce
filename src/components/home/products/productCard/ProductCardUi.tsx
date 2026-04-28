@@ -38,12 +38,13 @@ export default function ProductCardUi({ data }: Props) {
                             <div className="absolute top-3 right-3 flex flex-col space-y-2">
 
 
-                                <button
+                                <Link
+                                    href={`/wishlist`}
                                     className="bg-white h-8 w-8 rounded-full flex items-center justify-center transition shadow-sm text-gray-600 hover:text-red-500"
                                     title="Add to wishlist"
                                 >
                                     <FaRegHeart />
-                                </button>
+                                </Link>
 
 
                                 <button
@@ -54,7 +55,7 @@ export default function ProductCardUi({ data }: Props) {
 
 
                                 <Link
-                                    href="/products/6428eb43dc1175abc65ca0b3"
+                                    href={`/products/${item._id}`}
                                     className="bg-white h-8 w-8 rounded-full flex items-center justify-center text-gray-600 hover:text-green-600 shadow-sm "
                                 >
                                     <FaEye />

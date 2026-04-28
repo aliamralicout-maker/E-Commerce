@@ -37,10 +37,10 @@ export async function getSpecificCategory(id: string){
 
 
 
-// View All Products in Electronics
+
 export async function getProductsByCategory(id: string){
     try {
-        const res = await fetch(`https://ecommerce.routemisr.com/api/v1/products?category[in]=${id}`);
+        const res = await fetch(`https://ecommerce.routemisr.com/api/v1/categories/${id}/subcategories`);
 
         if(!res.ok){
             throw new Error(res.statusText + "error");

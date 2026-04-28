@@ -2,7 +2,7 @@
 import { createContext, ReactNode, useContext, useState } from 'react';
 
 export type CartContextType = {
-    numOfCartItem: number;
+    numOfCartItems: number;
     upDateNumOfCartItems: (num: number) => void;
 };
 
@@ -10,14 +10,14 @@ export const CartContext = createContext<CartContextType | null>(null);
 
 export default function CartProvider({ children }: { children: ReactNode }) {
 
-    const [numOfCartItem, setNumOfCartItem] = useState(0);
+    const [numOfCartItems, setNumOfCartItems] = useState(0);
 
     function upDateNumOfCartItems(count: number) {
-        setNumOfCartItem(count);
+        setNumOfCartItems(count);
     }
 
     return (
-        <CartContext.Provider value={{ numOfCartItem, upDateNumOfCartItems }}>
+        <CartContext.Provider value={{ numOfCartItems, upDateNumOfCartItems }}>
             {children}
         </CartContext.Provider>
     );

@@ -16,7 +16,6 @@ export default async function categories() {
   const dataCategori = resCategorise.data;
 
 
-
   return (
     <>
       {/* 1 */}
@@ -58,72 +57,75 @@ export default async function categories() {
 
       </div>
 
-        {/* Content */}
-              <div className="container mx-auto px-4 py-10">
-        
-                {/* Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-5">
-                  {/* brands go here */}
-                </div>
-        
-                {/* Empty State */}
-                <div className="text-center py-20">
-        
-                  <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-5">
-                    <Layers className="text-3xl text-gray-400" />
-                  </div>
-        
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">
-                    No categories Found
-                  </h3>
-        
-                  <p className="text-gray-500">
-                    categories will appear here once available.
-                  </p>
-        
-                </div>
-        
-              </div>
+      {!dataCategori ?
+        // 1
+        <div className="container mx-auto px-4 py-10">
 
+          {/* Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-5">
+            {/* brands go here */}
+          </div>
 
-      {/* 2 */}
-      <div className="container m-auto">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 sm:gap-6 py-10 px-5  ">
-          {dataCategori?.map((item => (
+          {/* Empty State */}
+          <div className="text-center py-20">
 
-            <div key={item._id} className=" flex flex-col justify-center ">
-              <Link
-                href={`/categories/${item._id}`}
-                className="group  rounded-2xl border border-gray-200 p-4 sm:p-6 shadow-sm hover:shadow-xl hover:border-primary-200 transition-all duration-300 hover:-translate-y-1"
-              >
-                <div className=" aspect-square rounded-xl overflow-hidden bg-gray-50 mb-4 ">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    width={300}
-                    height={300}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                </div>
-                <h3 className="font-bold text-gray-900 text-center group-hover:text-green-600 transition-colors mb-2">
-                  {item.name}
-                </h3>
-
-                <div className="flex justify-center opacity-0 group-hover:opacity-100 transition-opacity mb-3">
-                  <span className="text-xs text-green-600 flex items-center gap-1">
-                    View Subcategories
-                    <FaArrowRight className="text-[10px]" />
-                  </span>
-                </div>
-
-              </Link>
+            <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-5">
+              <Layers className="text-3xl text-gray-400" />
             </div>
 
-          )))}
+            <h3 className="text-lg font-bold text-gray-900 mb-2">
+              No categories Found
+            </h3>
+
+            <p className="text-gray-500">
+              categories will appear here once available.
+            </p>
+
+          </div>
 
         </div>
-      </div>
 
+        :
+
+        // 2
+        <div className="container m-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 sm:gap-6 py-10 px-5  gap-4">
+            {dataCategori?.map((item => (
+
+              <div key={item._id} className=" flex flex-col justify-center ">
+                <Link
+                  href={`/categories/${item._id}`}
+                  className="group  rounded-2xl border border-gray-200 p-4 sm:p-6 shadow-sm hover:shadow-xl hover:border-primary-200 transition-all duration-300 hover:-translate-y-1"
+                >
+                  <div className=" aspect-square rounded-xl overflow-hidden bg-gray-50 mb-4 ">
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      width={300}
+                      height={300}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                  </div>
+                  <h3 className="font-bold text-gray-900 text-center group-hover:text-green-600 transition-colors mb-2">
+                    {item.name}
+                  </h3>
+
+                  <div className="flex justify-center opacity-0 group-hover:opacity-100 transition-opacity mb-3">
+                    <span className="text-xs text-green-600 flex items-center gap-1">
+                      View Subcategories
+                      <FaArrowRight className="text-[10px]" />
+                    </span>
+                  </div>
+
+                </Link>
+              </div>
+
+            )))}
+
+          </div>
+        </div>
+
+      }
 
 
       {/* FeaturesSection */}

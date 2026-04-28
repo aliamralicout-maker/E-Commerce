@@ -170,7 +170,7 @@ export default function CartUi({ data }: Props) {
         <>
             <div className="container m-auto">
                 {/* nav */}
-                <nav className="flex items-center gap-2 text-sm text-gray-500 py-4">
+                <nav className="flex items-center gap-2 text-sm text-gray-500 p-4 ">
                     <Link href={'/'} className="hover:text-green-600 transition">
                         Home
                     </Link>
@@ -182,7 +182,7 @@ export default function CartUi({ data }: Props) {
                     </span>
                 </nav>
                 {/* title */}
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between p-4">
                     <div>
                         <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
                             <span className="bg-green-600 text-white w-12 h-12 rounded-xl flex items-center justify-center">
@@ -204,7 +204,7 @@ export default function CartUi({ data }: Props) {
 
 
                 {cartItems.length > 0 ?
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 py-14">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 py-14 px-4">
                         <div className='lg:col-span-2 space-y-5'>
                             {cartItems.map((item) => (
 
@@ -305,7 +305,7 @@ export default function CartUi({ data }: Props) {
 
                                 </div>
                             ))}
-                            <div className="mt-6 pt-6 px-2 border-t border-gray-200 flex items-center justify-between">
+                            <div className="mt-6 pt-6 px-4 border-t border-gray-200 flex items-center justify-between">
                                 <Link href="/" className="text-green-600 font-medium text-sm flex items-center gap-2">
                                     <span>←</span> Continue Shopping
                                 </Link>
@@ -319,7 +319,7 @@ export default function CartUi({ data }: Props) {
 
                         {/* RIGHT SIDE */}
                         {cartItems.length > 0 && (
-                            <div className="lg:col-span-1">
+                            <div className="lg:col-span-1 p-4">
                                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden sticky top-4">
 
                                     {/* Header */}
@@ -331,7 +331,7 @@ export default function CartUi({ data }: Props) {
                                         <p className='text-white text-sm'>{numOfCartItem} items in your cart</p>
                                     </div>
 
-                                    <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4 flex items-center gap-3">
+                                    <div className="bg-linear-to-r from-green-50 to-emerald-50 rounded-xl p-4 flex items-center gap-3">
 
                                         {/* Icon */}
                                         <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">

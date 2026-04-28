@@ -67,7 +67,7 @@ export default function AddToCartButton({ className, Icon, text, _id }: Props) {
                     <div className="flex items-center gap-3">
                         <FaTimesCircle className="text-red-500 text-xl" />
                         <span className="text-sm font-medium">
-                            {res.error?.message || 'Something went wrong!'}
+                            {res.error?.message || 'You need to log in first.!'}
                         </span>
                     </div>,
                     {

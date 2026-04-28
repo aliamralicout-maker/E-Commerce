@@ -26,7 +26,7 @@ import { getAllWishlist } from "@/actions/wishlist.action";
 
 export default function Navbar() {
 
-  const { upDateNumOfCartItems, numOfCartItem } = useCart();
+  const {numOfCartItems,upDateNumOfCartItems} = useCart();
   const { updateNumOfWishlistItems, numOfWishlistItems } = useWishlist();
 
 
@@ -198,7 +198,7 @@ export default function Navbar() {
 
                 {/* Wishlist */}
                 <Link className="relative p-2.5 rounded-full hover:bg-gray-100 transition-colors group" title="Wishlist" href="/wishlist">
-                  <FaHeart className="text-xl text-gray-500 group-hover:text-gray-600 transition-colors" />
+                  <FaHeart className="text-2xl text-gray-500 group-hover:text-gray-600 transition-colors" />
                   {numOfWishlistItems !== 0 && numOfWishlistItems !== undefined && <span className="absolute top-0 right-0 w-4.5 h-4.5 rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center ring-2 ring-white">
                     {numOfWishlistItems}
                   </span>}
@@ -206,9 +206,9 @@ export default function Navbar() {
 
                 {/* Cart */}
                 <Link className="relative p-2.5 rounded-full hover:bg-gray-100 transition-colors group" title="Cart" href="/cart">
-                  <FaShoppingCart className="text-xl text-gray-500 group-hover:text-gray-600 transition-colors" />
-                  {numOfCartItem !== 0 && numOfCartItem !== undefined && <span className="absolute top-0 right-0 w-4.5 h-4.5 rounded-full bg-green-600 text-white text-[10px] font-bold flex items-center justify-center ring-2 ring-white">
-                    {numOfCartItem}
+                  <FaShoppingCart className="text-2xl text-gray-500 group-hover:text-gray-600 transition-colors" />
+                  {numOfCartItems !== 0 && numOfCartItems !== undefined && <span className="absolute top-0 right-0 w-4.5 h-4.5 rounded-full bg-green-600 text-white text-[10px] font-bold flex items-center justify-center ring-2 ring-white">
+                    {numOfCartItems}
                   </span>}
                 </Link>
 
@@ -353,19 +353,19 @@ export default function Navbar() {
 
                   {/* Nav */}
                   <nav className="p-4 space-y-1">
-                    <Link className="block px-4 py-3 rounded-xl hover:bg-green-50" href="/">
+                    <Link onClick={()=> setIsOpen(false)} className="block px-4 py-3 rounded-xl hover:bg-green-50" href="/">
                       Home
                     </Link>
 
-                    <Link className="block px-4 py-3 rounded-xl hover:bg-green-50" href="/products">
+                    <Link onClick={()=> setIsOpen(false)} className="block px-4 py-3 rounded-xl hover:bg-green-50" href="/products">
                       Shop
                     </Link>
 
-                    <Link className="block px-4 py-3 rounded-xl hover:bg-green-50" href="/categories">
+                    <Link onClick={()=> setIsOpen(false)} className="block px-4 py-3 rounded-xl hover:bg-green-50" href="/categories">
                       Categories
                     </Link>
 
-                    <Link className="block px-4 py-3 rounded-xl hover:bg-green-50" href="/brands">
+                    <Link onClick={()=> setIsOpen(false)} className="block px-4 py-3 rounded-xl hover:bg-green-50" href="/brands">
                       Brands
                     </Link>
                   </nav>
@@ -374,14 +374,14 @@ export default function Navbar() {
 
                   {/* Wishlist + Cart */}
                   <div className="p-4 space-y-2">
-                    <Link href="/wishlist" className="flex items-center justify-between p-3 rounded-xl hover:bg-green-50">
+                    <Link onClick={()=> setIsOpen(false)} href="/wishlist" className="flex items-center justify-between p-3 rounded-xl hover:bg-green-50">
                       <div className="flex items-center gap-3">
                         <FaHeart className="text-red-500" />
                         <span>Wishlist</span>
                       </div>
                     </Link>
 
-                    <Link href="/cart" className="flex items-center justify-between p-3 rounded-xl hover:bg-green-50">
+                    <Link onClick={()=> setIsOpen(false)} href="/cart" className="flex items-center justify-between p-3 rounded-xl hover:bg-green-50">
                       <div className="flex items-center gap-3">
                         <FaShoppingCart className="text-green-600" />
                         <span>Cart</span>
@@ -395,6 +395,7 @@ export default function Navbar() {
                   { !session.data ? 
                   <div className="mt-5 p-4 grid grid-cols-2 gap-3">
                     <Link
+                    onClick={()=>setIsOpen(false)}
                       href="/login"
                       className="bg-green-600 hover:bg-green-700 transition text-white text-center py-3 rounded-xl"
                     >
@@ -402,6 +403,7 @@ export default function Navbar() {
                     </Link>
 
                     <Link
+                    onClick={()=>setIsOpen(false)}
                       href="/register"
                       className="border border-green-600 text-green-600 hover:bg-green-100 transition text-center py-3 rounded-xl"
                     >
