@@ -20,7 +20,7 @@ type Props = {
 export default function CartUi({ data }: Props) {
 
 
-    const { numOfCartItem, upDateNumOfCartItems } = useCart()
+    const { numOfCartItems, upDateNumOfCartItems } = useCart()
 
 
     const [cartItems, setCartItems] = useState(data.data?.products || []);
@@ -194,7 +194,7 @@ export default function CartUi({ data }: Props) {
                         <p className="text-gray-500 mt-2">
                             You have{' '}
                             <span className="font-semibold text-green--600">
-                                {numOfCartItem} item
+                                {numOfCartItems} item
                             </span>{' '}
                             in your cart
                         </p>
@@ -328,7 +328,7 @@ export default function CartUi({ data }: Props) {
                                             <FaBagShopping />
                                             Order Summary
                                         </h2>
-                                        <p className='text-white text-sm'>{numOfCartItem} items in your cart</p>
+                                        <p className='text-white text-sm'>{numOfCartItems} items in your cart</p>
                                     </div>
 
                                     <div className="bg-linear-to-r from-green-50 to-emerald-50 rounded-xl p-4 flex items-center gap-3">
