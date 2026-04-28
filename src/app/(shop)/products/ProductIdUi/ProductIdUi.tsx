@@ -52,8 +52,6 @@ export default function ProductIdUi({ product, items }: ProductIdUiProps) {
 
         try {
             const res = await addWishlist(id);
-            console.log('res cheek: ' , res);
-            
 
             if (res.status) {
                 setWishlistIds((prev) =>

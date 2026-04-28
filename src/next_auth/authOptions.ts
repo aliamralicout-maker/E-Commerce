@@ -76,6 +76,7 @@ export const authOpthions: NextAuthOptions = {
         session({ token, session }) {
             console.log("tset session", { session, token });
             session.user = token.user;
+            session.accessToken = token.accessToken;
             return session;
         }
 
