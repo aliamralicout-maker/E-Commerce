@@ -1,4 +1,4 @@
-import { Phone } from "lucide-react";
+
 import * as z from "zod";
 
 
@@ -41,7 +41,7 @@ export const registerSchema = z.object({
     Phone: z.string()
         .nonempty({ message: '*Required phone' })
         .regex(
-            /^01[0125][0-9]{8}$/,
+            /^(?:\+?2)?01[0125][0-9]{8}$/,
             { message: '*Invalid phone number' }
         ),
 }).refine((data) => {

@@ -129,7 +129,7 @@ export default async function categories() {
 
 
       {/* FeaturesSection */}
-      <FeaturesSection />
+       
 
     </>
   );

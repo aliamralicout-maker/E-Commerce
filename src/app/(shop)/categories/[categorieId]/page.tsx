@@ -106,7 +106,7 @@ export default async function categorieId({ params }: any) {
 
 
         </div >
-        <FeaturesSection />
+         
       </div >
 
     </>

@@ -1,3 +1,5 @@
+import { GetCart } from "@/actions/cart.action";
+import { Cart } from "@/interfaces/cart.interface";
 import Link from "next/link";
 import {
     FaReceipt,
@@ -16,9 +18,17 @@ import {
 } from "react-icons/fa";
 import { FaHouse } from "react-icons/fa6";
 
-export default function CheckoutPage({ Subtotal, cartItems }: any) {
+
+export default async function CheckoutPage({ Subtotal, cartItems }: any) {
 
     cartItems = 3
+
+    const res = await GetCart();
+
+    console.log('res', res?.data);
+
+    const data = res?.data?.products;
+    const totalPrice = res?.data?.totalCartPrice;
 
 
     return (
@@ -103,65 +113,72 @@ export default function CheckoutPage({ Subtotal, cartItems }: any) {
                                         </p>
                                     </div>
                                 </div>
+                                
+                                    {/* City */}
+                                    <div className="py-6">
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                            City <span className="text-red-500">*</span>
+                                        </label>
 
-                                {/* City */}
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                        City <span className="text-red-500">*</span>
-                                    </label>
+                                        <div className="relative">
+                                            <div className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center">
+                                                <FaCity className="text-gray-500" />
+                                            </div>
 
-                                    <div className="relative">
-                                        <div className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center">
-                                            <FaCity className="text-gray-500" />
+                                            <input
+                                                className="w-full px-4 py-3.5 pl-14 border-2 rounded-xl border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-100 outline-none"
+                                                placeholder="e.g. Cairo, Alexandria, Giza"
+                                            />
                                         </div>
-
-                                        <input
-                                            className="w-full px-4 py-3.5 pl-14 border-2 rounded-xl border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-100 outline-none"
-                                            placeholder="e.g. Cairo, Alexandria, Giza"
-                                            name="city"
-                                        />
                                     </div>
-                                </div>
 
-                                {/* Address */}
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                        Street Address <span className="text-red-500">*</span>
-                                    </label>
+                                    {/* Address */}
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                            Street Address <span className="text-red-500">*</span>
+                                        </label>
 
-                                    <div className="relative">
-                                        <div className="absolute left-4 top-4 w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center">
-                                            <FaMapMarkerAlt className="text-gray-500" />
+                                        <div className="relative">
+                                            <div className="absolute left-4 top-4 w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center">
+                                                <FaMapMarkerAlt className="text-gray-500" />
+                                            </div>
+
+                                            <textarea
+                                                rows={3}
+                                                className="w-full px-4 py-3.5 pl-14 border-2 rounded-xl border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-100 outline-none resize-none"
+                                                placeholder="Street, building, floor..."
+                                                
+                                            />
                                         </div>
-
-                                        <textarea
-                                            rows={3}
-                                            className="w-full px-4 py-3.5 pl-14 border-2 rounded-xl border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-100 outline-none resize-none"
-                                            placeholder="Street, building, floor..."
-                                            name="details"
-                                        />
                                     </div>
-                                </div>
 
-                                {/* Phone */}
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                        Phone <span className="text-red-500">*</span>
-                                    </label>
+                                    {/* Phone */}
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                            Phone <span className="text-red-500">*</span>
+                                        </label>
 
-                                    <div className="relative">
-                                        <div className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center">
-                                            <FaPhone className="text-gray-500" />
+                                        <div className="relative">
+                                            <div className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center">
+                                                <FaPhone className="text-gray-500" />
+                                            </div>
+
+                                            <input
+                                                className="w-full px-4 py-3.5 pl-14 border-2 rounded-xl border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-100 outline-none"
+                                                placeholder="01xxxxxxxxx"
+                                                type="tel"
+                                            />
                                         </div>
-
-                                        <input
-                                            className="w-full px-4 py-3.5 pl-14 border-2 rounded-xl border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-100 outline-none"
-                                            placeholder="01xxxxxxxxx"
-                                            name="phone"
-                                            type="tel"
-                                        />
                                     </div>
-                                </div>
+
+                                    {/* Submit Button */}
+                                    <button
+                                        type="submit"
+                                        className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-semibold transition"
+                                    >
+                                        Submit
+                                    </button>
+                                
 
                             </div>
                         </div>
@@ -211,25 +228,64 @@ export default function CheckoutPage({ Subtotal, cartItems }: any) {
                                     <FaShoppingBag />
                                     Order Summary
                                 </h2>
+                                <p className="text-white mt-2">
+                                    {data?.length} items
+                                </p>
                             </div>
 
                             <div className="p-5 space-y-3">
 
-                                <div className="flex justify-between">
-                                    <span>Subtotal</span>
-                                    <span className="font-semibold">{Subtotal} EGP</span>
+                                <div className="flex flex-col overflow-y-auto h-60 items-center gap-3 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors">
+
+                                    {/* products */}
+                                    {data?.map((item: any, index: number) => {
+                                        return (
+                                            <div
+                                                key={index}
+                                                className="flex  items-center gap-3 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
+                                            >
+                                                <div className="w-14 h-14 rounded-lg bg-white p-1  ">
+                                                    <img
+                                                        src={item?.product?.imageCover}
+                                                        alt={item?.title}
+                                                        className="w-full h-full object-contain"
+                                                    />
+                                                </div>
+
+                                                <div className="flex-1 min-w-0">
+                                                    <p className="text-sm font-medium text-gray-900 truncate">
+                                                        {item?.title}
+                                                    </p>
+                                                    <p className="text-xs text-gray-500 mt-0.5">
+                                                        {item?.quantity || 1} × {item?.price} EGP
+                                                    </p>
+                                                </div>
+
+                                                <p className="text-sm font-bold text-gray-900 shrink-0">
+                                                    {(item?.quantity || 1) * item?.price}
+                                                </p>
+                                            </div>
+                                        );
+                                    })}
+
+
                                 </div>
 
                                 <div className="flex justify-between">
-                                    <span>Shipping</span>
+                                    <span className="text-gray-700">Subtotal</span>
+                                    <span className="font-semibold">{totalPrice} EGP</span>
+                                </div>
+
+                                <div className="flex justify-between">
+                                    <span className="text-gray-700 flex items-center"> <FaTruck className="me-2 text-[#99A1AF]" /> <span>Shipping</span></span>
                                     <span className="text-green-600 font-semibold">FREE</span>
                                 </div>
 
                                 <hr />
 
                                 <div className="flex justify-between text-lg font-bold">
-                                    <span>Total</span>
-                                    <span className="text-green-600">{Subtotal} EGP</span>
+                                    <span className="text-black">Total</span>
+                                    <span className="text-green-600">{totalPrice} EGP</span>
                                 </div>
 
                                 <button

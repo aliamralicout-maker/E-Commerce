@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { FaPlus, FaMinus, FaTrash, FaTruck, FaBoxOpen, FaArrowRight, FaShoppingCart, FaShieldAlt } from "react-icons/fa";
 import { RiLock2Fill } from "react-icons/ri";
 import Link from 'next/link';
-import { FeaturesSection } from '@/ServicesUi/ServicesUi';
+ 
 import { CartResponse } from '@/interfaces/cart.interface';
 import { clearAllCart, deleteCart } from '@/actions/cart.action';
 import { useCart } from '@/context/CartContext';
@@ -222,7 +222,7 @@ export default function CartUi({ data }: Props) {
                                                     </div>
                                                 </Link>
 
-                                                <div className="flex-1 min-w-0 flex flex-col">
+                                                <div className="flex-1 min-w-0 flex flex-col items-center md:items-stretch">
                                                     <div className="mb-3">
                                                         <Link href="/products/1" className="group/title">
                                                             <h3 className="font-semibold text-gray-900 group-hover/title:text-green-600 transition-colors leading-relaxed text-base sm:text-lg">
@@ -243,7 +243,7 @@ export default function CartUi({ data }: Props) {
                                                         </span>
                                                     </div>
 
-                                                    <div className="mt-auto flex flex-wrap items-center justify-between gap-4">
+                                                    <div className="w-full flex flex-wrap justify-center md:justify-between gap-4">
                                                         <div className="flex items-center bg-gray-50 rounded-xl p-1 border border-gray-200">
                                                             <button
                                                                 // disabled={counts === 1}
@@ -453,7 +453,7 @@ export default function CartUi({ data }: Props) {
 
 
             </div>
-            <FeaturesSection />
+             
         </>
     )
 };

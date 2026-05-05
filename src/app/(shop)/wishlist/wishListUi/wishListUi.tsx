@@ -1,13 +1,13 @@
 'use client';
 
-import { AddToCart } from '@/actions/cart.action';
+import { AddToCart, GetCart } from '@/actions/cart.action';
 import { removeItemToWishlist } from '@/actions/wishlist.action';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { wishList } from '@/interfaces/wishList.interface';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import { FaCheckCircle, FaHeart, FaShoppingCart, FaTimesCircle, FaTrash } from "react-icons/fa";
+import { FaCheck, FaCheckCircle, FaHeart, FaShoppingCart, FaTimesCircle, FaTrash } from "react-icons/fa";
 import { ImSpinner2 } from 'react-icons/im';
 import { toast } from 'sonner';
 
@@ -22,6 +22,9 @@ export default function WishListUi({ data }: Params) {
     const [loadingId, setLoadingId] = useState<string | null>(null);
     const [wishlist, setWishlist] = useState(data.data || []);
     const [loadingWishlist, setLoadingWishlist] = useState<string | null>(null);
+    const [cart, setCart] = useState<string[]>([]);
+
+
 
     const delItem = async (id: string) => {
         setLoadingId(id);
@@ -46,6 +49,9 @@ export default function WishListUi({ data }: Params) {
             const res = await AddToCart(productId);
 
             if (res.status) {
+
+                setCart(prev => [...prev, productId]);
+                await getAllProductInCart();
 
                 toast(
                     <div className="flex items-center gap-3">
@@ -103,11 +109,29 @@ export default function WishListUi({ data }: Params) {
         }
     }
 
+    const getAllProductInCart = async () => {
+        const res = await GetCart();
+
+        if (res.status) {
+            const ids = res.data.products.map(
+                (p: any) => p.product?._id || p._id
+            );
+
+            setCart(ids);
+        } else {
+            console.log('error');
+
+        }
+    }
 
 
-useEffect(() => {
-    updateNumOfWishlistItems(wishlist.length);
-}, [wishlist]);
+    useEffect(() => {
+        getAllProductInCart();
+    }, []);
+
+    useEffect(() => {
+        updateNumOfWishlistItems(wishlist.length);
+    }, [wishlist]);
 
 
 
@@ -148,100 +172,101 @@ useEffect(() => {
                     {/* Rows */}
                     <div className="divide-y">
 
-                        {wishlist.map((item) => (
-                            <div
-                                key={item.id}
-                                className="flex flex-col md:flex-row md:items-center px-6 py-5 hover:bg-gray-50/50"
-                            >
+                        {wishlist.map((item) => {
 
-                                {/* Product */}
-                                <div className="md:w-[50%] flex items-center gap-4">
-                                    <img
-                                        src={item.imageCover}
-                                        className="w-20 h-20 object-contain border rounded-xl p-2 bg-gray-50"
-                                    />
+                            const isInCart = cart?.includes(item._id);
 
-                                    <div>
-                                        <Link href={`products/${item._id}`} className="font-medium line-clamp-2 cursor-pointer hover:text-green-400 transition">
-                                            {item.title}
-                                        </Link>
-                                        <p className="text-sm text-gray-400">
-                                            {item.category?.name}
-                                        </p>
+                            return (
+                                <div
+                                    key={item._id}
+                                    className="flex flex-col md:flex-row md:items-center px-6 py-5 hover:bg-gray-50/50"
+                                >
+
+                                    {/* Product */}
+                                    <div className="md:w-[50%] flex items-center gap-4">
+                                        <img
+                                            src={item.imageCover}
+                                            className="w-20 h-20 object-contain border rounded-xl p-2 bg-gray-50"
+                                        />
+
+                                        <div>
+                                            <Link href={`products/${item._id}`} className="font-medium line-clamp-2 cursor-pointer hover:text-green-400 transition">
+                                                {item.title}
+                                            </Link>
+                                            <p className="text-sm text-gray-400">
+                                                {item.category?.name}
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
 
-                                {/* Price */}
-                                {!item.priceAfterDiscount ? (
-                                    <div className="w-[15%] text-center font-semibold">
-                                        <span>{item.price} EGP</span>
-                                    </div>
-                                ) : (
-                                    <div className="md:w-[15%] md:text-center font-semibold flex flex-col md:items-center">
-
-                                        <div className='flex pt-4'>
-                                            <div className="md:hidden flex items-center text-gray-600  me-2">
-                                                <span>
-                                                    price:
-                                                </span>
-                                            </div>
-
-                                            <div className='flex flex-col'>
+                                    {/* Price */}
+                                    {!item.priceAfterDiscount ? (
+                                        <div className="w-[15%] text-center font-semibold flex mt-4">
+                                            <span>{item.price} EGP</span>
+                                        </div>
+                                    ) : (
+                                        <div className="md:w-[15%] md:text-center font-semibold flex flex-col md:items-center">
+                                            <div className='flex pt-4 items-center'>
                                                 <span className="text-green-600">
                                                     {item.priceAfterDiscount} EGP
                                                 </span>
 
-                                                <span className="line-through text-gray-400 text-xs">
+                                                <span className="line-through text-gray-400 text-xs ms-2">
                                                     {item.price} EGP
                                                 </span>
                                             </div>
                                         </div>
+                                    )}
+
+                                    {/* Status */}
+                                    <div className="md:w-[15%] flex md:justify-center pt-4">
+                                        <span className="px-3 py-1 text-xs bg-green-50 text-green-700 rounded-full">
+                                            In Stock
+                                        </span>
+                                    </div>
+
+                                    {/* Actions */}
+                                    <div className="md:w-[20%] flex md:justify-center gap-2 mt-4">
+
+                                        <button
+                                            onClick={() => addProductToCart(item._id)}
+                                            disabled={loadingWishlist === item._id || isInCart}
+                                            className="w-[90%] flex items-center justify-center gap-2 px-3 bg-green-700 hover:bg-green-800 transition text-white rounded-lg text-sm disabled:opacity-60 disabled:cursor-not-allowed"
+                                        >
+                                            {loadingWishlist === item._id ? (
+                                                <>
+                                                    <ImSpinner2 className="animate-spin" />
+                                                    <span>Loading...</span>
+                                                </>
+                                            ) : isInCart ? (
+                                                <>
+                                                    <FaCheck />
+                                                    <span>Added</span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <FaShoppingCart />
+                                                    <span>Add To Cart</span>
+                                                </>
+                                            )}
+                                        </button>
+
+                                        <button
+                                            onClick={() => delItem(item._id)}
+                                            className="w-10 h-10 flex items-center justify-center border rounded-lg cursor-pointer text-gray-400 hover:text-red-500 hover:border-red-200 transition"
+                                        >
+                                            {loadingId === item._id ? (
+                                                <span className="w-4 h-4 border-2 border-gray-300 border-t-red-500 rounded-full animate-spin"></span>
+                                            ) : (
+                                                <FaTrash />
+                                            )}
+                                        </button>
 
                                     </div>
-                                )}
-                                {/* Status */}
-                                <div className="md:w-[15%] flex md:justify-center pt-4">
-                                    <span className='md:hidden text-gray-600 '>Status: </span>
-                                    <span className="px-3 py-1 text-xs bg-green-50 text-green-700 rounded-full">
-                                        In Stock
-                                    </span>
-                                </div>
-
-                                {/* Actions */}
-                                <div className="md:w-[20%] flex md:justify-center gap-2 mt-4">
-
-                                    <button
-                                        onClick={() => addProductToCart(item?._id)}
-                                        className="w-[90%] flex items-center justify-center gap-2 px-3 bg-green-700 hover:bg-green-800 transition cursor-pointer text-white rounded-lg text-sm"
-                                    >
-                                        {loadingWishlist === item?._id ? (
-                                            <>
-                                                <ImSpinner2 className="animate-spin" />
-                                                <span>Loading...</span>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <FaShoppingCart />
-                                                <span>Add To Cart</span>
-                                            </>
-                                        )}
-                                    </button>
-
-                                    <button
-                                        onClick={() => delItem(item._id)}
-                                        className="w-10 h-10 flex items-center justify-center border rounded-lg cursor-pointer text-gray-400 hover:text-red-500 hover:border-red-200 transition"
-                                    >
-                                        {loadingId === item._id ? (
-                                            <span className="w-4 h-4 border-2 border-gray-300 border-t-red-500 rounded-full animate-spin"></span>
-                                        ) : (
-                                            <FaTrash />
-                                        )}
-                                    </button>
 
                                 </div>
-
-                            </div>
-                        ))}
+                            );
+                        })}
 
                     </div>
                 </div>

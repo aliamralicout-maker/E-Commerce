@@ -21,9 +21,9 @@ const singleProduct  = await getSinglProduct(productId);
 
 
 
-const category = singleProduct.data.category.name;
-const subcategory = singleProduct.data.subcategory[0].name;
-const title = singleProduct.data.title;
+const category = singleProduct.data?.category?.name;
+const subcategory = singleProduct.data?.subcategory[0]?.name;
+const title = singleProduct.data?.title;
 
 
 
@@ -38,7 +38,7 @@ const title = singleProduct.data.title;
 
   return (
     <>
-      <ProductIdUi items={items} product={singleProduct.data}/>
+      <ProductIdUi items={items} product={singleProduct?.data}/>
     </>
   )
 }

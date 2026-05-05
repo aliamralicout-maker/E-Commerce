@@ -332,7 +332,7 @@ export default function Register() {
           </section>
         </div>
       </div>
-      <FeaturesSection />
+       
     </>
   )
 

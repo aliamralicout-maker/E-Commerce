@@ -147,7 +147,7 @@ export default function Login() {
 
 
         </div>
-        <FeaturesSection/>
+         
       </section>
     </>
   )

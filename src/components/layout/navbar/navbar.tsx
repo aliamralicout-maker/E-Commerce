@@ -1,13 +1,17 @@
 'use client';
 
 import Image from "next/image";
-import { FaTruck, FaGift, FaUserPlus, FaPhoneAlt, FaSearch, FaTimes, FaHeart, FaShoppingCart, FaUser, FaBars, FaHeadset, FaSignOutAlt, FaCog, FaAddressBook, FaBoxOpen } from "react-icons/fa";
+import {
+  FaTruck, FaGift, FaUserPlus, FaPhoneAlt, FaSearch,
+  FaTimes, FaHeart, FaShoppingCart, FaUser, FaBars, FaHeadset,
+  FaSignOutAlt, FaCog, FaAddressBook, FaBoxOpen
+} from "react-icons/fa";
 import { FiUser, FiMail } from "react-icons/fi";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { PiSignOutBold } from "react-icons/pi";
 import logo from '../../../assets/images/freshcart-logo.49f1b44d.svg'
 import { signOut, useSession } from "next-auth/react";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 
@@ -17,6 +21,7 @@ import { useCart } from "@/context/CartContext";
 import { GetCart } from "@/actions/cart.action";
 import { useWishlist } from "@/context/WishlistContext";
 import { getAllWishlist } from "@/actions/wishlist.action";
+import { LuUser } from "react-icons/lu";
 
 
 
@@ -26,7 +31,7 @@ import { getAllWishlist } from "@/actions/wishlist.action";
 
 export default function Navbar() {
 
-  const {numOfCartItems,upDateNumOfCartItems} = useCart();
+  const { numOfCartItems, upDateNumOfCartItems } = useCart();
   const { updateNumOfWishlistItems, numOfWishlistItems } = useWishlist();
 
 
@@ -47,9 +52,9 @@ export default function Navbar() {
 
 
   useEffect(() => {
-    GetCart().then((res) => { upDateNumOfCartItems(res.numOfCartItems) })
+    GetCart().then((res) => { upDateNumOfCartItems(res?.numOfCartItems) })
     getAllWishlist().then((res) => {
-      updateNumOfWishlistItems(res.data.length)
+      updateNumOfWishlistItems(res?.data?.length)
     })
   }, [])
 
@@ -222,10 +227,10 @@ export default function Navbar() {
 
                     {/* Button */}
                     <button onClick={() => setDropDown(!dropDown)} className=" cursor-pointer relative p-2.5 rounded-full hover:bg-gray-100 transition-colors group">
-                      <FaRegCircleUser className="text-xl text-gray-500 group-hover:text-primary-600 transition-colors" />
+                      <FaRegCircleUser className="text-2xl text-gray-500 group-hover:text-primary-600 transition-colors" />
                     </button>
 
-        {/* -------------------------------------------------------------------------- */}
+                    {/* -------------------------------------------------------------------------- */}
                     {/* Dropdown */}
                     {dropDown && <div className="absolute right-0 top-full mt-2 w-64 bg-white border border-gray-100 rounded-2xl shadow-xl transition-all duration-200 origin-top-right scale-95 overflow-hidden">
 
@@ -252,27 +257,27 @@ export default function Navbar() {
                       {/* Links */}
                       <div className="py-2">
 
-                        <Link onClick={()=>setDropDown(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary-600 hover:bg-gray-300 transition-colors" href="/profile">
+                        <Link onClick={() => setDropDown(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary-600 hover:bg-gray-300 transition-colors" href="/profile">
                           <FaUser className="w-4 text-gray-400" />
                           My Profile
                         </Link>
 
-                        <Link onClick={()=>setDropDown(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary-600 hover:bg-gray-300 transition-colors" href="/orders">
+                        <Link onClick={() => setDropDown(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary-600 hover:bg-gray-300 transition-colors" href="/orders">
                           <FaBoxOpen className="w-4 text-gray-400" />
                           My Orders
                         </Link>
 
-                        <Link onClick={()=>setDropDown(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary-600 hover:bg-gray-300 transition-colors" href="/wishlist">
+                        <Link onClick={() => setDropDown(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary-600 hover:bg-gray-300 transition-colors" href="/wishlist">
                           <FaHeart className="w-4 text-gray-400" />
                           My Wishlist
                         </Link>
 
-                        <Link onClick={()=>setDropDown(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary-600 hover:bg-gray-300 transition-colors" href="/profile">
+                        <Link onClick={() => setDropDown(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary-600 hover:bg-gray-300 transition-colors" href="/profile">
                           <FaAddressBook className="w-4 text-gray-400" />
                           Addresses
                         </Link>
 
-                        <Link onClick={()=>setDropDown(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary-600 hover:bg-gray-300 transition-colors" href="/profile">
+                        <Link onClick={() => setDropDown(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary-600 hover:bg-gray-300 transition-colors" href="/profile">
                           <FaCog className="w-4 text-gray-400" />
                           Settings
                         </Link>
@@ -294,7 +299,7 @@ export default function Navbar() {
                     </div>}
                   </div>
                 }
-        {/* -------------------------------------------------------------------------- */}
+                {/* -------------------------------------------------------------------------- */}
                 {/* Mobile Menu */}
                 <button onClick={() => setIsOpen(true)} className="lg:hidden ml-1 w-9 h-9 rounded-full bg-green-600 text-white flex items-center justify-center transition-all duration-300 shadow-md hover:scale-110 active:scale-95 hover:rotate-3 cursor-pointer">
                   <FaBars className="text-sm" />
@@ -353,19 +358,19 @@ export default function Navbar() {
 
                   {/* Nav */}
                   <nav className="p-4 space-y-1">
-                    <Link onClick={()=> setIsOpen(false)} className="block px-4 py-3 rounded-xl hover:bg-green-50" href="/">
+                    <Link onClick={() => setIsOpen(false)} className="block px-4 py-3 rounded-xl hover:bg-green-50" href="/">
                       Home
                     </Link>
 
-                    <Link onClick={()=> setIsOpen(false)} className="block px-4 py-3 rounded-xl hover:bg-green-50" href="/products">
+                    <Link onClick={() => setIsOpen(false)} className="block px-4 py-3 rounded-xl hover:bg-green-50" href="/products">
                       Shop
                     </Link>
 
-                    <Link onClick={()=> setIsOpen(false)} className="block px-4 py-3 rounded-xl hover:bg-green-50" href="/categories">
+                    <Link onClick={() => setIsOpen(false)} className="block px-4 py-3 rounded-xl hover:bg-green-50" href="/categories">
                       Categories
                     </Link>
 
-                    <Link onClick={()=> setIsOpen(false)} className="block px-4 py-3 rounded-xl hover:bg-green-50" href="/brands">
+                    <Link onClick={() => setIsOpen(false)} className="block px-4 py-3 rounded-xl hover:bg-green-50" href="/brands">
                       Brands
                     </Link>
                   </nav>
@@ -374,14 +379,14 @@ export default function Navbar() {
 
                   {/* Wishlist + Cart */}
                   <div className="p-4 space-y-2">
-                    <Link onClick={()=> setIsOpen(false)} href="/wishlist" className="flex items-center justify-between p-3 rounded-xl hover:bg-green-50">
+                    <Link onClick={() => setIsOpen(false)} href="/wishlist" className="flex items-center justify-between p-3 rounded-xl hover:bg-green-50">
                       <div className="flex items-center gap-3">
                         <FaHeart className="text-red-500" />
                         <span>Wishlist</span>
                       </div>
                     </Link>
 
-                    <Link onClick={()=> setIsOpen(false)} href="/cart" className="flex items-center justify-between p-3 rounded-xl hover:bg-green-50">
+                    <Link onClick={() => setIsOpen(false)} href="/cart" className="flex items-center justify-between p-3 rounded-xl hover:bg-green-50">
                       <div className="flex items-center gap-3">
                         <FaShoppingCart className="text-green-600" />
                         <span>Cart</span>
@@ -392,27 +397,40 @@ export default function Navbar() {
                   <div className="border-t mx-4" />
 
                   {/* Auth */}
-                  { !session.data ? 
-                  <div className="mt-5 p-4 grid grid-cols-2 gap-3">
-                    <Link
-                    onClick={()=>setIsOpen(false)}
-                      href="/login"
-                      className="bg-green-600 hover:bg-green-700 transition text-white text-center py-3 rounded-xl"
-                    >
-                      Sign In
-                    </Link>
+                  {!session.data ?
+                    <div className="mt-5 p-4 grid grid-cols-2 gap-3">
+                      <Link
+                        onClick={() => setIsOpen(false)}
+                        href="/login"
+                        className="bg-green-600 hover:bg-green-700 transition text-white text-center py-3 rounded-xl"
+                      >
+                        Sign In
+                      </Link>
 
-                    <Link
-                    onClick={()=>setIsOpen(false)}
-                      href="/register"
-                      className="border border-green-600 text-green-600 hover:bg-green-100 transition text-center py-3 rounded-xl"
-                    >
-                      Sign Up
-                    </Link>
-                  </div>:
-                  <div onClick={()=>logOutHandlar()} className="px-4">
-                    <button className="mt-5 w-full border border-red-600 text-red-600 hover:bg-red-100 transition text-center py-3 rounded-xl">sign Out</button>
-                  </div>
+                      <Link
+                        onClick={() => setIsOpen(false)}
+                        href="/register"
+                        className="border border-green-600 text-green-600 hover:bg-green-100 transition text-center py-3 rounded-xl"
+                      >
+                        Sign Up
+                      </Link>
+                    </div> :
+                    <>
+                      <Link onClick={() => setIsOpen(false)}
+                      href={'/profile'}
+                      className="flex items-center gap-3 w-[90%] m-auto  text-gray-700 hover:bg-blue-50 transition rounded-xl cursor-pointer py-4 mt-4 ps-4 ">
+
+                        <LuUser className="text-lg text-gray-600" />
+
+                        <span className="flex-1 text-left font-medium">
+                          {userInfo?.name}
+                        </span>
+
+                      </Link>
+                      <div onClick={() => logOutHandlar()} className="px-4">
+                        <button className="mt-5 w-full text-red-600 hover:bg-red-100 transition text-center py-3 rounded-xl cursor-pointer">sign Out</button>
+                      </div>
+                    </>
                   }
 
                   {/* Support */}

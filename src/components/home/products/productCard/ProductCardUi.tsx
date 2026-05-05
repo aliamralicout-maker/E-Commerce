@@ -2,7 +2,7 @@
 import AddToCartButton from '@/app/(shop)/products/ProductIdUi/AddToCartButton';
 import { proudctsResponse } from '@/types/response.type';
 import Link from 'next/link';
-import { FaEye, FaPlus, FaRegHeart } from 'react-icons/fa';
+import { FaEye, FaPlus, FaRegHeart, FaRegStar, FaStar } from 'react-icons/fa';
 import { LuRefreshCw } from 'react-icons/lu';
 
 
@@ -77,10 +77,19 @@ export default function ProductCardUi({ data }: Props) {
 
                             <div className="flex items-center mb-2">
                                 <div className="flex text-amber-400 mr-2">
-                                    {/* stars  */}
+                                    {/* <div className="flex text-yellow-400"> */}
+                                        {[...Array(5)].map((_, i) => {
+                                            const rating = Math.round(item?.ratingsAverage || 0);
+
+                                            return i < rating
+                                                ? <FaStar key={i} />
+                                                : <FaRegStar key={i} />;
+                                        })}
+                                    {/* </div> */}
                                 </div>
                                 <span className="text-xs text-gray-500">{item.ratingsAverage} ({item.ratingsQuantity})</span>
                             </div>
+
 
 
                             <div className="flex items-center justify-between">

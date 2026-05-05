@@ -9,6 +9,7 @@ import Navbar from "@/components/layout/navbar/navbar";
 import Footer from "@/components/layout/footer/footer";
 import { Toaster } from "sonner";
 import Providers from "@/ServicesUi/Providers";
+import { FeaturesSection } from "@/ServicesUi/ServicesUi";
 
 const exo = Exo({
   subsets: ["latin"],
@@ -37,6 +38,7 @@ export default function RootLayout({
           <Navbar/>
         <Toaster position="top-right" />
         {children}
+        <FeaturesSection />
         <Footer/>
         </Providers>
       </body>

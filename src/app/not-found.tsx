@@ -1,4 +1,4 @@
-import { FeaturesSection } from '@/ServicesUi/ServicesUi';
+ 
 import Link from 'next/link';
 import React from 'react'
 import { FaAppleAlt, FaCarrot, FaLemon } from 'react-icons/fa'
@@ -98,7 +98,7 @@ export default function notFound() {
 
                 </div>
             </div>
-            <FeaturesSection />
+             
         </>
     )
 }

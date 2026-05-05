@@ -1,7 +1,7 @@
 'use client';
 
 import { Data } from '@/interfaces/productDataInterface';
-import { FeaturesSection } from '@/ServicesUi/ServicesUi';
+
 import Link from 'next/link';
 import { useState } from 'react';
 import { CiHeart } from 'react-icons/ci';
@@ -21,6 +21,9 @@ type ProductIdUiProps = {
 
 export default function ProductIdUi({ product, items }: ProductIdUiProps) {
 
+    console.log('product =', product);
+
+
     const { updateNumOfWishlistItems } = useWishlist();
 
     const [active, setActive] = useState<number>(0);
@@ -30,9 +33,9 @@ export default function ProductIdUi({ product, items }: ProductIdUiProps) {
     const [loadingWishlist, setLoadingWishlist] = useState(false);
     const [wishlistIds, setWishlistIds] = useState<string[]>([]);
 
-    const images = product.images;
+    const images = product?.images;
 
-    const visibleImages = images.slice(startIndex, startIndex + 3);
+    const visibleImages = images?.slice(startIndex, startIndex + 3);
 
     const handleClick = (index: number) => {
 
@@ -201,7 +204,13 @@ export default function ProductIdUi({ product, items }: ProductIdUiProps) {
                                 {/* Rating */}
                                 <div className="flex items-center gap-3 mb-4">
                                     <div className="flex text-yellow-400">
-                                        <FaStar /><FaStar /><FaStar /><FaStar /><FaRegStar />
+                                        {[...Array(5)].map((_, i) => {
+                                            const rating = Math.round(product?.ratingsAverage || 0);
+
+                                            return i < rating
+                                                ? <FaStar key={i} />
+                                                : <FaRegStar key={i} />;
+                                        })}
                                     </div>
                                     <span className="text-sm text-gray-600">
                                         {product.ratingsAverage} ({product.reviews.length} reviews)
@@ -572,9 +581,8 @@ export default function ProductIdUi({ product, items }: ProductIdUiProps) {
             </section>
 
             {/* You May Also Like */}
-            <ProductCardDetails {...product} />
+            <ProductCardDetails id={product?._id} />
 
-            <FeaturesSection />
         </>
     );
 }

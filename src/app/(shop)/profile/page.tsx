@@ -11,32 +11,107 @@ import {
     Lock,
     Eye,
 } from "lucide-react";
-import { FaMapMarkerAlt } from "react-icons/fa";
+import { FaCheckCircle, FaMapMarkerAlt, FaSpinner, FaTimesCircle } from "react-icons/fa";
 import { IoSettingsSharp } from "react-icons/io5";
-import { useState } from "react";
-import {ErrorMessage, FeaturesSection} from '../../../ServicesUi/ServicesUi'
+import { useEffect, useState } from "react";
+import { ErrorMessage, FeaturesSection } from '../../../ServicesUi/ServicesUi'
 import { useForm } from "react-hook-form";
-// import {changePasswordSchema,changePasswordPaylodType} from '../../../schema/changePassowrd.schema'
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { changePasswordSchema, changePasswordPaylodType, defaultValues } from "../../../schema/changePassowrd.schema";
+import { apiChangePassword } from "@/actions/changePassword.action";
+import { toast } from "sonner";
 
 
-export default function page() {
+
+export default function Profile() {
 
     const [open, setOpen] = useState(false);
     const [setting, setSetting] = useState(false);
-    const [actev,setActev] = useState(1);
+    const [actev, setActev] = useState(1);
+    const [loading, setLoading] = useState(false);
 
-    // const {handleSubmit, register, formState: { errors, isSubmitting }}  = useForm<changePasswordPaylodType>({
-    //     // defaultValues,
-    //     // resolver:zodResolver(changePasswordSchema)
-    //     resolver:zodResolver(changePasswordPaylodType),
-    //     mode:'onSubmit',
-    // })
+    const handleSetActive = (value: number) => {
+        setActev(value);
+        localStorage.setItem("activeTab", String(value));
+    };
 
-    async function submitChangePass(formValue) {
-        console.log(formValue);
-        
+    const { handleSubmit, register, formState: { errors, isSubmitting } } = useForm<changePasswordPaylodType>({
+        defaultValues,
+        resolver: zodResolver(changePasswordSchema),
+        mode: 'onSubmit',
+    })
+
+    async function submitChangePass(formValue: changePasswordPaylodType) {
+        setLoading(true);
+        console.log('form data = ', formValue);
+        try {
+            const res = await apiChangePassword(formValue);
+            if (res.status) {
+                toast(
+                    <div className="flex items-center gap-3">
+                        <FaCheckCircle className="text-green-500 text-xl" />
+                        <span className="text-sm font-medium">
+                            Password changed successfully
+                        </span>
+                    </div>,
+                    {
+                        duration: 3000,
+                        icon: null,
+                        style: {
+                            background: '#ECFDF5',
+                            color: '#065F46',
+                            border: '1px solid #A7F3D0',
+                            borderRadius: '10px',
+                            padding: '12px 16px'
+                        }
+                    }
+                );
+            }
+            else {
+                toast.error(
+                    <div className="flex items-center gap-3">
+                        <FaTimesCircle className="text-red-500 text-xl" />
+                        <span className="text-sm font-medium">
+                            {res.error || 'You need to log in first'}
+                        </span>
+                    </div>,
+                    {
+                        icon: null,
+                        style: {
+                            background: '#FEF2F2',
+                            color: '#991B1B',
+                            border: '1px solid #FECACA',
+                            borderRadius: '10px',
+                            padding: '12px 16px'
+                        }
+                    }
+                );
+            }
+
+        } catch (error) {
+            toast.error(
+                <div className="flex items-center gap-3">
+                    <FaTimesCircle className="text-red-500 text-xl" />
+                    <span className="text-sm font-medium">
+                        Network error occurred
+                    </span>
+                </div>
+            );
+        } finally {
+            setLoading(false);
+        }
     }
 
+
+    useEffect(() => {
+        const saved = localStorage.getItem("activeTab");
+        if (saved) {
+            const value = Number(saved);
+            setActev(value);
+            setSetting(value === 0);
+        }
+    }, []);
 
     return (
         <>
@@ -89,10 +164,10 @@ export default function page() {
                                 {/* My Addresses */}
                                 <li>
                                     <button
-                                        onClick={() => (setSetting(false),setActev(1))}
-                                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group bg-green-50 ${actev === 1 ? `text-green-700` : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
+                                        onClick={() => handleSetActive(1)}
+                                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group  ${actev === 1 ? `text-green-700 bg-green-100` : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
                                     >
-                                        <div className= {`w-9 h-9 rounded-lg flex items-center justify-center text-gray-900 ${actev === 1 ? 'bg-green-500' : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200'}  text-white`}>
+                                        <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-gray-900 ${actev === 1 ? 'bg-green-500' : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200'}  text-white`}>
                                             <FaMapMarkerAlt className={`w-4 h-4 ${actev === 1 ? 'text-white' : 'text-gray-600'}`} />
                                         </div>
 
@@ -105,8 +180,8 @@ export default function page() {
                                 {/* Settings */}
                                 <li>
                                     <button
-                                        onClick={() => (setSetting(true),setActev(0))}
-                                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${actev === 0 ? 'text-green-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 '}`}
+                                        onClick={() => handleSetActive(0)}
+                                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${actev === 0 ? 'text-green-700 bg-green-100' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 '}`}
                                     >
                                         <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${actev === 0 ? 'bg-green-500' : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200'}  text-white`}>
                                             <IoSettingsSharp className={`w-4 h-4 ${actev === 0 ? 'text-white' : 'text-gray-600'}`} />
@@ -165,7 +240,7 @@ export default function page() {
 
                     {/* Settings */}
                     {setting &&
-                    <main className="flex-1 min-w-0">
+                        <main className="flex-1 min-w-0">
 
                             <div className="space-y-6">
 
@@ -298,20 +373,20 @@ export default function page() {
                                         </div>
 
 
-                {/* -------------------------- form ------------------------- */}
-                                        <form onSubmit={()=> handleSubmit(submitChangePass)} className="space-y-5">
+                                        {/* -------------------------- form ------------------------- */}
+                                        <form onSubmit={handleSubmit(submitChangePass)} className="space-y-5">
 
                                             <div>
                                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                                     Current Password
                                                 </label>
                                                 <input
-                                                // {...register('password')}
+                                                    {...register('currentPassword')}
                                                     type="password"
                                                     placeholder="Enter your current password"
                                                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none transition-all pr-12"
                                                 />
-                                                {/* {errors.password.message && <ErrorMessage error={errors.password.message}/>} */}
+                                                {errors.currentPassword?.message && <ErrorMessage error={errors.currentPassword?.message} />}
                                             </div>
 
                                             <div>
@@ -319,7 +394,7 @@ export default function page() {
                                                     New Password
                                                 </label>
                                                 <input
-                                                // {...register('rePassword')}
+                                                    {...register('password')}
                                                     type="password"
                                                     placeholder="Enter your new password"
                                                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none transition-all"
@@ -327,7 +402,7 @@ export default function page() {
                                                 <p className="text-xs text-gray-500 mt-1">
                                                     Must be at least 6 characters
                                                 </p>
-                                                {/* {errors.rePassword?.message && <ErrorMessage error={errors.rePassword?.message} />} */}
+                                                {errors.password?.message && <ErrorMessage error={errors.password?.message} />}
                                             </div>
 
                                             <div>
@@ -335,21 +410,27 @@ export default function page() {
                                                     Confirm New Password
                                                 </label>
                                                 <input
-                                                // {...register('newPassword')}
+                                                    {...register('rePassword')}
                                                     type="password"
                                                     placeholder="Confirm your new password"
                                                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none transition-all"
                                                 />
                                             </div>
-                                            {/* {errors.newPassword?.message && <ErrorMessage error={errors.newPassword?.message} />} */}
+                                            {errors.rePassword?.message && <ErrorMessage error={errors.rePassword?.message} />}
 
                                             <div className="pt-4">
                                                 <button
                                                     type="submit"
-                                                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-amber-600 text-white font-semibold hover:bg-amber-700 transition-colors shadow-lg shadow-amber-600/25"
+                                                    disabled={loading}
+                                                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-amber-600 text-white font-semibold hover:bg-amber-700 transition-colors shadow-lg shadow-amber-600/25 disabled:opacity-70"
                                                 >
-                                                    <Lock className="w-4 h-4" />
-                                                    Change Password
+                                                    {loading ? (
+                                                        <FaSpinner className="w-4 h-4 animate-spin" />
+                                                    ) : (
+                                                        <Lock className="w-4 h-4" />
+                                                    )}
+
+                                                    {loading ? "Loading..." : "Change Password"}
                                                 </button>
                                             </div>
 
@@ -361,7 +442,7 @@ export default function page() {
 
                             </div>
 
-                    </main>}
+                        </main>}
 
                 </div>
             </div>
@@ -471,7 +552,7 @@ export default function page() {
                 </div>
             </div>}
 
-            <FeaturesSection/>
+             
         </>
     );
 }

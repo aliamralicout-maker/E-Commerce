@@ -1,34 +1,33 @@
-
 import * as z from "zod";
 
 export const defaultValues = {
-    password: '',
-    rePassword: '',
-    newPassword: '',
-}
+    password: "",
+    rePassword: "",
+    newPassword: "",
+};
 
-export const changePasswordSchema = z.object({
-    password: z
-        .string()
-        .nonempty({ message: "*required email" })
-        .email({ message: "*You must enter an email that contains a username, the @ symbol, and a valid domain like gmail.com." }),
-        
-        rePassword: z
-        .string()
-        .nonempty({ message: "*required password" })
-        .regex(
-            /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/,
-            "* Password must be at least 8 characters and include an uppercase letter, a lowercase letter, a number, and a special character."
-        ),
-        newPassword: z
+export const changePasswordSchema = z
+    .object({
+        currentPassword: z
             .string()
-            .nonempty({ message: "*required email" })
-            .email({ message: "*You must enter an email that contains a username, the @ symbol, and a valid domain like gmail.com." }),
-}).refine((data) => {
-    if (data.password === data.rePassword) {
-        return true;
-    }
-    return false;
-}, { error: '*Password Are Not Match', path: ['rePassword'] });
+            .nonempty({ message: "*required password" }),
 
-export type changePasswordPaylodType = z.infer<typeof changePasswordSchema>
+        password: z
+            .string()
+            .nonempty({ message: "*required new password" })
+            .regex(
+                /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/,
+                "*Password must be at least 8 characters and include uppercase, lowercase, number, and special character."
+            ),
+
+        rePassword: z
+            .string()
+            .nonempty({ message: "*required password confirmation" }),
+    })
+    .refine((data) => data.password === data.rePassword, {
+        message: "*Passwords do not match",
+        path: ["rePassword"],
+    });
+
+export type changePasswordPaylodType = z.infer<typeof changePasswordSchema>;
+
